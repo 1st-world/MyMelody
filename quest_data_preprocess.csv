@@ -1,0 +1,127 @@
+stage_id,stage,substage,q_number,q_type,question,subquestion,options_1,options_2,options_3,options_4,options_5,answer,hint
+1,바이엘,도,1,Voca,그림의 의미와 가장 가까운 단어는?,cat,cat,cot,cut,,,cat,고양이
+1,바이엘,도,2,Translating,다음과 같은 의미의 문장을 완성하세요.,I went to the market.,나는 ,시장에 ,갔다.,,,나는 시장에 갔다.,
+1,바이엘,도,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그녀는 어제 친구에게 책을 주었다.,She ,gave her ,friend ,a book ,yesterday.,She gave her friend a book yesterday.,
+1,바이엘,도,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,moon,moon,4,turtle,,,moon,달
+1,바이엘,도,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,My school starts at 7 a.m.,My ,school ,starts ,at ,7 a.m.,My school starts at 7 a.m.,우리 학교는 아침 7시에 시작한다.
+1,바이엘,도,6,Reading,다음 문장을 읽어보세요.,My mother helps me with my homework.,,,,,,,엄마는 나의 숙제를 도와준다.
+2,바이엘,레,1,Voca,그림의 의미와 가장 가까운 단어는?,bat,bat,bet,but,,,bat,"박쥐, 방망이"
+2,바이엘,레,2,Translating,다음과 같은 의미의 문장을 완성하세요.,He studies hard every day.,그는 매일 ,열심히 ,공부한다.,,,그는 매일 열심히 공부한다.,
+2,바이엘,레,3,Translating,다음과 같은 의미의 문장을 완성하세요.,우리는 어제 영화를 보았다.,We ,saw ,a movie ,yesterday.,,We saw a movie yesterday.,
+2,바이엘,레,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,star,star,dog,fat,,,star,별
+2,바이엘,레,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,She plays the piano every evening.,She ,plays ,the ,piano ,every evening.,She plays the piano every evening.,그녀는 매일 저녁 피아노를 연주한다.
+2,바이엘,레,6,Reading,다음 문장을 읽어보세요.,He bought a new car last week.,,,,,,,그는 지난 주에 새 차를 샀다.
+3,바이엘,미,1,Voca,그림의 의미와 가장 가까운 단어는?,pen,pen,pan,pin,,,pen,펜
+3,바이엘,미,2,Translating,다음과 같은 의미의 문장을 완성하세요.,My mother is always busy.,우리 ,엄마는 ,항상 ,바쁘다.,,우리 엄마는 항상 바쁘다.,
+3,바이엘,미,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그들은 여름에 자주 수영하러 간다.,They ,often go ,swimming ,in ,the summer.,They often go swimming in the summer.,
+3,바이엘,미,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,hat,hat,우주선,merge,,,hat,모자
+3,바이엘,미,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,The movie starts at 7 p.m.,The ,movie ,starts ,at ,7 p.m.,The movie starts at 7 p.m.,영화는 저녁 7시에 시작한다.
+3,바이엘,미,6,Reading,다음 문장을 읽어보세요.,The cat is under the table.,,,,,,,고양이는 테이블 아래에 있다.
+4,바이엘,파,1,Voca,그림의 의미와 가장 가까운 단어는?,man,man,men,min,,,man,"남자, 사람"
+4,바이엘,파,2,Translating,다음과 같은 의미의 문장을 완성하세요.,Some people are afraid of dogs.,일부 ,사람들은 ,개를 ,무서워한다.,,일부 사람들은 개를 무서워한다.,
+4,바이엘,파,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그녀는 중국어와 영어를 할 수 있다.,She ,can ,speak ,Chinese ,and English.,She can speak Chinese and English.,
+4,바이엘,파,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,fish,fish,map,rain,,,fish,물고기
+4,바이엘,파,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,She has been studying English for three years.,She ,has been ,studying ,English ,for three years.,She has been studying English for three years.,그녀는 3년 동안 영어를 공부하고 있다.
+4,바이엘,파,6,Reading,다음 문장을 읽어보세요.,The boy who is wearing a blue shirt is my brother.,,,,,,,파란 셔츠를 입고 있는 소년은 내 남동생이다.
+5,바이엘,솔,1,Voca,그림의 의미와 가장 가까운 단어는?,map,map,mop,mall,,,map,지도
+5,바이엘,솔,2,Translating,다음과 같은 의미의 문장을 완성하세요.,They were surprised by how quickly the time passed.,그들은 ,시간이 얼마나 ,빨리 ,지나갔는지에 ,놀랐다.,그들은 시간이 얼마나 빨리 지나갔는지에 놀랐다.,
+5,바이엘,솔,3,Translating,다음과 같은 의미의 문장을 완성하세요.,부모님께서 저녁 식사 전에 숙제를 끝내라고 말씀하셨다.,My parents ,told me ,to finish ,my homework ,before dinner.,My parents told me to finish my homework before dinner.,
+5,바이엘,솔,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,chair,chair,fortune,run,,,chair,의자
+5,바이엘,솔,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,He was late because he missed the bus this morning.,He ,was late ,because he ,missed the bus ,this morning.,He was late because he missed the bus this morning.,그는 오늘 아침에 버스를 놓쳐서 늦었다.
+5,바이엘,솔,6,Reading,다음 문장을 읽어보세요.,The teacher asked the students to be quiet during the exam.,,,,,,,선생님은 시험 시간 동안 학생들에게 조용히 해달라고 부탁했다.
+6,바이엘,라,1,Voca,그림의 의미와 가장 가까운 단어는?,dog,dog,dig,dot,,,dog,개
+6,바이엘,라,2,Translating,다음과 같은 의미의 문장을 완성하세요.,"If it rains tomorrow, we will stay at home.",내일 ,"비가 오면, ",우리는 집에 ,있을 것이다.,,"내일 비가 오면, 우리는 집에 있을 것이다.",
+6,바이엘,라,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그녀는 그 소식을 들었을 때 무슨 말을 해야 할지 몰랐다.,She ,didn’t know ,what to say ,when she ,heard the news.,She didn’t know what to say when she heard the news.,
+6,바이엘,라,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,rain,rain,숭배,friendship,,,rain,비
+6,바이엘,라,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,I have a lot of homework to do today.,I have ,a lot of ,homework ,to do ,today.,I have a lot of homework to do today.,나는 오늘 해야 할 숙제가 많다.
+6,바이엘,라,6,Reading,다음 문장을 읽어보세요.,They are planning to visit their grandparents next weekend.,,,,,,,그들은 다음 주말에 조부모님을 방문할 계획이다.
+7,바이엘,시,1,Voca,그림의 의미와 가장 가까운 단어는?,run,run,rain,ruin,,,run,달리다
+7,바이엘,시,2,Translating,다음과 같은 의미의 문장을 완성하세요.,She is reading a book in the library.,그녀는 ,도서관에서 ,책을 ,읽고 있다.,,그녀는 도서관에서 책을 읽고 있다.,
+7,바이엘,시,3,Translating,다음과 같은 의미의 문장을 완성하세요.,해는 동쪽에서 뜨고 서쪽으로 진다.,The sun ,rises ,in the east ,and sets ,in the west.,The sun rises in the east and sets in the west.,
+7,바이엘,시,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,window,window,man,fish,,,window,창문
+7,바이엘,시,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,The book that I borrowed from the library is very interesting.,The book ,that I borrowed ,from the library ,is ,very interesting.,The book that I borrowed from the library is very interesting.,도서관에서 빌린 책은 매우 흥미롭다.
+7,바이엘,시,6,Reading,다음 문장을 읽어보세요.,He forgot to bring his lunch to school.,,,,,,,그는 학교에 점심 식사를 가져오는 것을 잊었다.
+8,체르니,도,1,Voca,그림의 의미와 가장 가까운 단어는?,cup,cup,cap,cop,,,cup,컵
+8,체르니,도,2,Translating,다음과 같은 의미의 문장을 완성하세요.,"Although it was raining heavily, they decided to go on a hike.",비록 ,"비가 많이 오고 있었지만, ",그들은 ,하이킹을 가기로 ,결정했다.,"비록 비가 많이 오고 있었지만, 그들은 하이킹을 가기로 결정했다.",
+8,체르니,도,3,Translating,다음과 같은 의미의 문장을 완성하세요.,우리가 어젯밤에 방문한 레스토랑은 고객 서비스가 훌륭했다.,The restaurant ,we visited ,last night ,had excellent ,customer service.,The restaurant we visited last night had excellent customer service.,
+8,체르니,도,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,snow,snow,cup,log,,,snow,눈
+8,체르니,도,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,She was impressed by the artist's attention to detail in the painting.,She ,was impressed ,by the artist's attention ,to detail ,in the painting.,She was impressed by the artist's attention to detail in the painting.,그녀는 그림에 나타난 화가의 디테일에 깊은 인상을 받았다.
+8,체르니,도,6,Reading,다음 문장을 읽어보세요.,"If you want to improve your English, you should practice speaking every day.",,,,,,,"영어 실력을 향상시키고 싶다면, 말하는 연습을 매일 해야 한다."
+9,체르니,레,1,Voca,그림의 의미와 가장 가까운 단어는?,fat,fat,fan,far,,,fat,"살찐, 두꺼운, 지방"
+9,체르니,레,2,Translating,다음과 같은 의미의 문장을 완성하세요.,"Despite being tired, she stayed up late to finish her assignment.",피곤함에도 ,"불구하고, ",그녀는 과제를 ,끝내기 위해 ,늦게까지 깨어있었다.,"피곤함에도 불구하고, 그녀는 과제를 끝내기 위해 늦게까지 깨어있었다.",
+9,체르니,레,3,Translating,다음과 같은 의미의 문장을 완성하세요.,네가 추천한 책이 정말 흥미로운 것으로 밝혀졌다.,The book ,you recommended ,turned out ,to be ,really interesting.,The book you recommended turned out to be really interesting.,
+9,체르니,레,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,fortune,fortune,lip,demolition,,,fortune,행운
+9,체르니,레,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,I was surprised to find out that he speaks five languages fluently.,I was surprised ,to find out ,that he speaks ,five languages ,fluently.,I was surprised to find out that he speaks five languages fluently.,그가 5개 국어를 유창하게 구사한다는 것을 알고 놀랐다.
+9,체르니,레,6,Reading,다음 문장을 읽어보세요.,"By the time we arrived, the event had already started.",,,,,,,"우리가 도착했을 때, 행사는 이미 시작되었다."
+10,체르니,미,1,Voca,그림의 의미와 가장 가까운 단어는?,sun,sun,fun,run,,,sun,태양
+10,체르니,미,2,Translating,다음과 같은 의미의 문장을 완성하세요.,Learning a new language requires a lot of patience and practice.,새로운 언어를 ,배우는 것은 ,많은 인내와 ,연습이 ,필요하다.,새로운 언어를 배우는 것은 많은 인내와 연습이 필요하다.,
+10,체르니,미,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그녀는 회의에 늦은 것에 대해 사과했다.,She ,apologized for ,being late ,to the meeting.,,She apologized for being late to the meeting.,
+10,체르니,미,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,shadow,shadow,서랍장,소시지,,,shadow,그림자
+10,체르니,미,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,The project was delayed due to unforeseen circumstances.,The project ,was delayed ,due to ,unforeseen ,circumstances.,The project was delayed due to unforeseen circumstances.,그 프로젝트는 예기치 못한 상황으로 인해 지연되었다.
+10,체르니,미,6,Reading,다음 문장을 읽어보세요.,He managed to fix the computer even though he had no prior experience.,,,,,,,그는 이전에 경험이 없었음에도 불구하고 컴퓨터를 고칠 수 있었다.
+11,체르니,파,1,Voca,그림의 의미와 가장 가까운 단어는?,tip,tip,tap,top,,,tip,"사례금, 조언"
+11,체르니,파,2,Translating,다음과 같은 의미의 문장을 완성하세요.,The weather forecast predicts a sunny day tomorrow.,일기 예보에 ,따르면 ,내일은 ,맑은 날씨가 ,예상된다.,일기 예보에 따르면 내일은 맑은 날씨가 예상된다.,
+11,체르니,파,3,Translating,다음과 같은 의미의 문장을 완성하세요.,"그녀는 학위를 마친 후, 세계 여행을 계획하고 있다.",After ,"finishing her degree, ",she ,plans to travel ,around the world.,"After finishing her degree, she plans to travel around the world.",
+11,체르니,파,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,friendship,friendship,연,발굴,,,friendship,우정
+11,체르니,파,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,The concert tickets sold out within minutes of going on sale.,The concert tickets ,sold out ,within ,minutes of ,going on sale.,The concert tickets sold out within minutes of going on sale.,콘서트 티켓은 판매 시작 후 몇 분 만에 매진되었다.
+11,체르니,파,6,Reading,다음 문장을 읽어보세요.,He was promoted to manager after working at the company for five years.,,,,,,,그는 회사에서 5년간 근무한 후 부장으로 승진했다.
+12,체르니,솔,1,Voca,그림의 의미와 가장 가까운 단어는?,lip,lip,lap,lop,,,lip,입술
+12,체르니,솔,2,Translating,다음과 같은 의미의 문장을 완성하세요.,"Despite his initial reluctance, he agreed to join the team.",처음에는 ,"꺼려했지만, ",그는 팀에 ,합류하기로 ,동의했다.,"처음에는 꺼려했지만, 그는 팀에 합류하기로 동의했다.",
+12,체르니,솔,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그녀는 직장에서 새로운 환경에 빠르게 적응했다.,She ,quickly adapted ,to the ,new environment ,at her job.,She quickly adapted to the new environment at her job.,
+12,체르니,솔,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,compass,compass,택배박스,산,,,compass,나침반
+12,체르니,솔,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,"If you follow the instructions carefully, you should have no problems.",If you ,follow the instructions ,"carefully, ",you should have ,no problems.,"If you follow the instructions carefully, you should have no problems.",지침을 주의 깊게 따르면 문제가 없을 것이다.
+12,체르니,솔,6,Reading,다음 문장을 읽어보세요.,The museum offers guided tours in multiple languages.,,,,,,,그 박물관은 다국어로 가이드 투어를 제공한다.
+13,체르니,라,1,Voca,그림의 의미와 가장 가까운 단어는?,nut,nut,net,not,,,nut,"견과류, 너트"
+13,체르니,라,2,Translating,다음과 같은 의미의 문장을 완성하세요.,He has been working on this project for the past few months.,그는 지난 ,몇 달 동안 ,이 프로젝트를 ,진행해 왔다.,,그는 지난 몇 달 동안 이 프로젝트를 진행해 왔다.,
+13,체르니,라,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그 회사는 매출 증대를 위해 새로운 전략을 시행하기로 결정했다.,The company ,decided to ,implement ,a new strategy ,to increase sales.,The company decided to implement a new strategy to increase sales.,
+13,체르니,라,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,envelope,envelope,상어,항해,,,envelope,봉투
+13,체르니,라,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,He always checks his work thoroughly before submitting it.,He ,always checks ,his work thoroughly ,before ,submitting it.,He always checks his work thoroughly before submitting it.,그는 작업을 제출하기 전에 항상 철저하게 점검한다.
+13,체르니,라,6,Reading,다음 문장을 읽어보세요.,The city is planning to build more parks to improve the quality of life for its residents.,,,,,,,시는 주민들의 삶의 질을 향상시키기 위해 더 많은 공원을 지을 계획이다.
+14,체르니,시,1,Voca,그림의 의미와 가장 가까운 단어는?,log,log,lag,lend,,,log,"통나무, 일지, 기록"
+14,체르니,시,2,Translating,다음과 같은 의미의 문장을 완성하세요.,She was pleasantly surprised by how quickly she adjusted to the new job.,그녀는 ,새로운 직장에 ,얼마나 빨리 ,적응했는지에 ,기쁘게 놀랐다.,그녀는 새로운 직장에 얼마나 빨리 적응했는지에 기쁘게 놀랐다.,
+14,체르니,시,3,Translating,다음과 같은 의미의 문장을 완성하세요.,이해가 안 되는 부분이 있으면 주저하지 말고 도움을 요청하라.,If you ,don't understand ,"something, ",don't hesitate ,to ask for help.,"If you don't understand something, don't hesitate to ask for help.",
+14,체르니,시,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,sculpture,sculpture,sun,일몰,,,sculpture,조각품
+14,체르니,시,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,He completed the marathon despite facing several challenges along the way.,He completed ,the marathon ,despite facing ,several challenges ,along the way.,He completed the marathon despite facing several challenges along the way.,그는 도중에 몇 가지 어려움을 겪었음에도 불구하고 마라톤을 완주했다.
+14,체르니,시,6,Reading,다음 문장을 읽어보세요.,They were surprised to discover how much the neighborhood had changed.,,,,,,,그들은 동네가 얼마나 변했는지 알고 놀랐다.
+15,클래식,도,1,Voca,그림의 의미와 가장 가까운 단어는?,demolition,demolition,democratic,demon,,,demolition,"파괴, 철거"
+15,클래식,도,2,Translating,다음과 같은 의미의 문장을 완성하세요.,The old building was demolished after it was damaged in the earthquake.,그 오래된 ,건물은 ,지진으로 인해 ,파손된 후 ,철거되었다.,그 오래된 건물은 지진으로 인해 파손된 후 철거되었다.,
+15,클래식,도,3,Translating,다음과 같은 의미의 문장을 완성하세요.,공무원들은 그 건물을 죽음의 함정이라 묘사하고 철거를 명령했다.,Officials ,described the building ,as a deathtrap ,and ordered it ,to be demolished.,Officials described the building as a deathtrap and ordered it to be demolished.,
+15,클래식,도,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,discussion,discussion,nut,마술,,,discussion,"토론, 논의"
+15,클래식,도,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,A discussion was held to decide how to promote the product.,A discussion ,was held ,to decide ,how to promote ,the product.,A discussion was held to decide how to promote the product.,그 제품을 어떻게 홍보할지 결정하기 위해 토론이 열렸다.
+15,클래식,도,6,Reading,다음 문장을 읽어보세요.,We had a short discussion in the hallway.,,,,,,,우리는 복도에서 짧은 논의를 가졌다.
+16,클래식,레,1,Voca,그림의 의미와 가장 가까운 단어는?,authentic,authentic,auto,fake,,,authentic,"진짜의, 확실한"
+16,클래식,레,2,Translating,다음과 같은 의미의 문장을 완성하세요.,The new restaurant downtown serves authentic Mexican cuisine.,시내에 ,새로 생긴 레스토랑은 ,정통 멕시칸 요리를 ,제공한다.,,시내에 새로 생긴 레스토랑은 정통 멕시칸 요리를 제공한다.,
+16,클래식,레,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그 그림이 진품인지 모르겠다.,I don’t know ,if ,the painting ,is authentic.,,I don’t know if the painting is authentic.,
+16,클래식,레,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,fabric,fabric,공감,부엌,,,fabric,"섬유, 원단"
+16,클래식,레,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,The manufacturer's garments are made of natural fabric only.,The manufacturer's ,garments ,are made ,of ,natural fabric only.,The manufacturer's garments are made of natural fabric only.,그 제조업체의 의류는 천연 원단으로만 만들어졌다.
+16,클래식,레,6,Reading,다음 문장을 읽어보세요.,The shoes are made from water-resistant fabric.,,,,,,,그 신발은 방수 원단으로 만들어졌다.
+17,클래식,미,1,Voca,그림의 의미와 가장 가까운 단어는?,replacement,replacement,reuse,return,,,replacement,"교체, 후임자"
+17,클래식,미,2,Translating,다음과 같은 의미의 문장을 완성하세요.,We need the replacement for this broken laptop.,이 고장난 ,노트북의 ,교체가 ,필요하다.,,이 고장난 노트북의 교체가 필요하다.,
+17,클래식,미,3,Translating,다음과 같은 의미의 문장을 완성하세요.,인사부에서 윈터 씨의 후임자를 찾고 있다.,Human ,resources ,is looking for ,a replacement ,for Mr.Winter.,Human resources is looking for a replacement for Mr.Winter.,
+17,클래식,미,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,sip,sip,snow,바람,,,sip,"홀짝이다, 조금씩 마시다"
+17,클래식,미,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,Sip your beverages at the cafe's new outdoor area!,Sip ,your beverages ,at ,the cafe's new ,outdoor area!,Sip your beverages at the cafe's new outdoor area!,카페의 새로운 야외 공간에서 음료를 즐겨보세요!
+17,클래식,미,6,Reading,다음 문장을 읽어보세요.,"She sat there, sipping at her tea.",,,,,,,그녀는 거기 앉아서 차를 홀짝거리고 있었다.
+18,클래식,파,1,Voca,그림의 의미와 가장 가까운 단어는?,emphasis,emphasis,embrace,empty,,,emphasis,강조
+18,클래식,파,2,Translating,다음과 같은 의미의 문장을 완성하세요.,He put emphasis on equality in his speech.,그는 연설에서 ,평등을 ,강조했다.,,,그는 연설에서 평등을 강조했다.,
+18,클래식,파,3,Translating,다음과 같은 의미의 문장을 완성하세요.,우리 회사는 팀의 화합을 매우 중요시한다.,Our company ,puts ,a lot of emphasis ,on ,team harmony.,Our company puts a lot of emphasis on team harmony.,
+18,클래식,파,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,dismiss,dismiss,pen,조각상,,,dismiss,"해고하다, 해산시키다"
+18,클래식,파,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,I was dismissed from my job today.,I was ,dismissed ,from ,my job ,today.,I was dismissed from my job today.,나는 오늘 직장에서 해고되었다.
+18,클래식,파,6,Reading,다음 문장을 읽어보세요.,It is likely that the only reasonable course of action in this case is to dismiss the president.,,,,,,,이 경우에 취할 수 있는 유일한 합리적 조치는 사장을 해임하는 것일 것이다.
+19,클래식,솔,1,Voca,그림의 의미와 가장 가까운 단어는?,purify,purify,put,praise,,,purify,"정화하다, 정제하다"
+19,클래식,솔,2,Translating,다음과 같은 의미의 문장을 완성하세요.,We have a filter that purifies our drinking water.,우리는 ,식수를 ,정화하는 ,필터를 ,가지고 있다.,우리는 식수를 정화하는 필터를 가지고 있다.,
+19,클래식,솔,3,Translating,다음과 같은 의미의 문장을 완성하세요.,"먼저, 액체를 정제한다.","First, ",purify ,the ,liquid.,,"First, purify the liquid.",
+19,클래식,솔,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,symptom,symptom,책상,마켓,,,symptom,증상
+19,클래식,솔,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,A runny nose is a common symptom of a cold.,A runny nose ,is a ,common ,symptom ,of a cold.,A runny nose is a common symptom of a cold.,콧물은 감기의 흔한 증상이다.
+19,클래식,솔,6,Reading,다음 문장을 읽어보세요.,"If the symptoms persist, you should see a doctor.",,,,,,,증상이 지속된다면 의사의 진찰을 받아야 한다.
+20,클래식,라,1,Voca,그림의 의미와 가장 가까운 단어는?,consecutive,consecutive,constructure,concentrate,,,consecutive,연속적인
+20,클래식,라,2,Translating,다음과 같은 의미의 문장을 완성하세요.,Retail sales rose for the fifth consecutive month.,소매 ,판매량은 ,다섯 달 연속으로 ,증가했다.,,소매 판매량은 다섯 달 연속으로 증가했다.,
+20,클래식,라,3,Translating,다음과 같은 의미의 문장을 완성하세요.,레알 마드리드는 3번의 연이은 시즌 동안 UEFA 챔피언스 리그를 우승했다.,Real Madrid ,won ,the UEFA Champions League ,for three ,consecutive seasons.,Real Madrid won the UEFA Champions League for three consecutive seasons.,
+20,클래식,라,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,expectation,expectation,rain,objection,,,expectation,"기대, 예상"
+20,클래식,라,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,My boss has unreasonable expectations.,My boss ,has ,unreasonable ,expectations.,,My boss has unreasonable expectations.,내 상사는 지나친 기대를 하고 있다.
+20,클래식,라,6,Reading,다음 문장을 읽어보세요.,My parents had quite a lot of expectations of me.,,,,,,,부모님은 나에게 꽤 많은 기대를 하고 있었다.
+21,클래식,시,1,Voca,그림의 의미와 가장 가까운 단어는?,objection,objection,observation,obsolete,,,objection,"반대, 이의"
+21,클래식,시,2,Translating,다음과 같은 의미의 문장을 완성하세요.,I want to make an objection.,나는 ,이의를 ,제기하고 싶다.,,,나는 이의를 제기하고 싶다.,
+21,클래식,시,3,Translating,다음과 같은 의미의 문장을 완성하세요.,그는 그녀의 계획에 몇 가지 반대 의견을 가졌다.,He ,had ,some objections ,to ,her plan.,He had some objections to her plan.,
+21,클래식,시,4,Listening,단어를 듣고 어울리는 그림을 고르세요.,merge,merge,compass,편지,,,merge,합병하다
+21,클래식,시,5,Listening,문장을 듣고 순서에 맞게 나열하세요.,I heard a rumor that we are going to merge with another company.,I heard ,a rumor that ,we are going to ,merge with ,another company.,I heard a rumor that we are going to merge with another company.,나는 우리가 다른 회사와 합병할 거라는 소문을 들었다.
+21,클래식,시,6,Reading,다음 문장을 읽어보세요.,The colors of the sunset merged together in a beautiful display.,,,,,,,석양의 색이 어우러져 아름다운 풍경을 연출했다.
