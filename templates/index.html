@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이멜로디 - 내 목소리로 배우는 영어</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <style>
+        body {
+            display: flex;
+            font-family: 'Spoqa Han Sans Neo', sans-serif;
+            background-color: #fff4f6;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .logo {
+            max-width: 300px;
+            margin-bottom: 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 16px rgba(246, 114, 156, 0.3);
+            transition: 0.3s;
+        }
+        .button:hover {
+            background-color: rgba(246, 114, 156, 0.3);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(246, 114, 156, 0.3);
+        }
+        .register {
+            background-color: white;
+            color: palevioletred;
+        }
+        .login {
+            background-color: palevioletred;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="logo" src="/static/images/mymelody_logo.png" alt="서비스 로고">
+        <div>
+            <a href="/register" class="button register">처음이에요</a>
+            <a href="/login" class="button login">이미 계정이 있어요</a>
+        </div>
+    </div>
+</body>
+</html>

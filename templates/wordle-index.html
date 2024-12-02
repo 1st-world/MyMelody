@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영단어 게임 - 마이멜로디</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <link rel="stylesheet" href="/static/wordle-style.css">
+    <link rel="stylesheet" href="/static/sidebar-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .progress-fill {
+            width: {{ achievement_rate }}%;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="/main" class="logo-link">
+            <img src="/static/images/mymelody_logo.png" alt="마이멜로디 로고">
+        </a>
+        <a href="/quest" class="button-link" data-text="퀘스트">🗝️</a>
+        <a href="/voice" class="button-link" data-text="AI 목소리">🎙️</a>
+        <a href="/wordle-index" class="button-link" data-text="영단어 게임">🎮</a>
+
+        <div class="sidebar-bottom">
+            <a href="/mypage"> <i class="fas fa-cog"></i> <!-- 설정 아이콘 --> </a>
+            <i class="fas fa-sign-out-alt" id="logoutIcon"></i> <!-- 로그아웃 아이콘 -->
+        </div>
+    </div>
+
+    <!-- 로그아웃 확인 모달 -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <p>로그아웃 하시겠습니까?</p>
+            <button id="confirmLogout" class="btn-confirm">예</button>
+            <button id="cancelLogout" class="btn-cancel">아니요</button>
+        </div>
+    </div>
+
+    <!-- Main Content Area (Wordle Game) -->
+    <div class="content">
+        <div class="container">
+            <h1>Wordle Game</h1>
+            <p>6번의 기회 안에 5자 영단어를 추측하세요!</p>
+            <a href="#" class="btn btn-secondary" id="howtoPlay">How to Play</a>
+            <a href="#" class="btn btn-primary" id="play">Play</a>
+        </div>
+
+        <!-- How to Play Dialog -->
+        <div class="dialog-overlay" id="howtoPlayDialog">
+            <div class="dialog-content">
+                <h2>How to Play</h2>
+                <ul>
+                    <li>5글자 영단어를 추측합니다.</li>
+                    <li>입력한 글자 위치의 색상이 힌트입니다:
+                        <ul>
+                            <li>초록색: 정확한 위치의 정확한 글자</li>
+                            <li>노란색: 단어에 포함되지만 위치가 다른 글자</li>
+                            <li>회색: 단어에 포함되지 않는 글자</li>
+                        </ul>
+                    </li>
+                    <li>단어 입력은 최대 6번까지 가능합니다!</li>
+                </ul>
+                <button class="close-btn" id="closeHowtoPlayDialog">닫기</button>
+            </div>
+        </div>
+
+        <!-- Dialog for Keyboard Requirement -->
+        <div class="dialog-overlay" id="keyboardRequiredDialog">
+            <div class="dialog-content">
+                <h2>키보드가 필요합니다!</h2>
+                <p>이 게임을 플레이하려면 키보드가 필요합니다. 아직 가상 키보드를 지원하지 않아 모바일 환경에서는 플레이가 어렵습니다.</p>
+                <button class="close-btn" id="closeKeyboardRequiredDialog">닫기</button>
+                <button class="go-btn" id="playAnyway">그래도 플레이!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="profile">
+            <img id="profile-pic" src="/static/images/profile/{{ profile_img }}" alt="프로필 사진">
+            <div>
+                <p id="user-info"> {{ nickname }} 님! 오늘도 열공🔥</p>
+            </div>
+        </div>
+        <div class="quote">
+            <p style="font-weight: bold;">📣 명언 영어로 보기</p>
+            <div class="quote-text">
+                <p id="quote-ko">데이터 불러오는 중…</p>
+                <p id="quote-en">-</p>
+            </div>
+        </div>
+        <div class="progress">
+            <p style="font-weight: bold;">🎯 목표 달성률</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        <div class="calendar">
+            <p style="font-weight: bold;">🗓️ 출석 달력</p>
+            <input type="text" id="current-date" readonly>
+            <div class="calendar-box">
+                <div id="current-month"></div>
+                <!-- 달력이 표시될 영역 -->
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // How to Play 버튼과 다이얼로그 연결
+        const howtoPlayBtn = document.getElementById('howtoPlay');
+        const playBtn = document.getElementById('play');
+        const howtoPlayDialog = document.getElementById('howtoPlayDialog');
+        const closeHowtoPlayDialogBtn = document.getElementById('closeHowtoPlayDialog');
+
+        // How to Play 클릭 시 다이얼로그 표시
+        howtoPlayBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            howtoPlayDialog.style.visibility = 'visible';
+            howtoPlayDialog.style.opacity = '1';
+        });
+
+        // How to Play 다이얼로그 닫기 버튼
+        closeHowtoPlayDialogBtn.addEventListener('click', function() {
+            howtoPlayDialog.style.visibility = 'hidden';
+            howtoPlayDialog.style.opacity = '0';
+        });
+
+        // Play 버튼 클릭 시 게임 페이지로 이동
+        playBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'wordle';
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutModal = document.getElementById('logoutModal');
+
+            // 로그아웃 아이콘 클릭 시 모달
+            document.getElementById('logoutIcon').addEventListener('click', function() {
+                logoutModal.style.display = 'flex';
+                logoutModal.style.opacity = 1;
+            });
+            document.getElementById('confirmLogout').addEventListener('click', function() {
+                window.location.href = 'user-logout';
+            });
+            document.getElementById('cancelLogout').addEventListener('click', function() {
+                logoutModal.style.opacity = 0;
+                setTimeout(() => {
+                    logoutModal.style.display = 'none';
+                }, 100);
+            });
+        });
+    </script>
+
+    <script>
+        // 명언 데이터
+        const quotes = [
+            { ko: "고통 없이는 얻는 것도 없다.", en: "No pain, no gain." },
+            { ko: "배움은 결코 끝나지 않는다.", en: "Learning never ends." },
+            { ko: "오늘 할 수 있는 일을 내일로 미루지 마라.", en: "Do not put off until tomorrow what you can do today." },
+            { ko: "지식은 힘이다.", en: "Knowledge is power." },
+            { ko: "실패는 성공의 어머니다.", en: "Failure is the mother of success." },
+            { ko: "노력은 결코 배신하지 않는다.", en: "Effort never betrays." },
+            { ko: "자신을 믿어라.", en: "Believe in yourself." },
+            { ko: "한 걸음씩 앞으로 나아가라.", en: "Take one step forward." },
+            { ko: "꿈을 크게 가져라.", en: "Dream big." },
+            { ko: "매일 조금씩 나아져라.", en: "Get a little better every day." },
+            { ko: "할 수 있다고 믿어라.", en: "Believe you can." },
+            { ko: "자신의 길을 찾아라.", en: "Find your own path." },
+            { ko: "지금 행동하라.", en: "Act now." },
+            { ko: "기회는 준비된 자에게 온다.", en: "Opportunity comes to those who are prepared." },
+            { ko: "절대 포기하지 마라.", en: "Never give up." },
+            { ko: "자신의 잠재력을 믿어라.", en: "Believe in your potential." },
+            { ko: "자신을 발전시켜라.", en: "Develop yourself." },
+            { ko: "성공은 노력의 결과다.", en: "Success is the result of effort." },
+            { ko: "미래는 지금 만든다.", en: "The future is made now." },
+            { ko: "꾸준함이 열쇠다.", en: "Consistency is the key." }
+        ];
+
+        // 랜덤 명언 선택
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const randomQuote = quotes[randomIndex];
+            document.getElementById("quote-ko").innerText = randomQuote.ko;
+            document.getElementById("quote-en").innerText = randomQuote.en;
+        }
+
+        // 페이지 로드 시 명언 표시
+        window.onload = displayRandomQuote;
+        function displayCurrentMonth() {
+            var currentDate = new Date(); // 현재 날짜 객체 생성
+            var monthNames = [
+                "1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월"
+            ];
+            var currentMonth = currentDate.getMonth(); // 현재 월 가져오기 (0부터 시작)
+
+            document.getElementById("current-month").innerHTML = monthNames[currentMonth];        
+        }
+
+        // 달력을 그리는 함수
+        function printCalendar(y, m) {
+            var calendar_box = document.getElementById("calendar");
+
+            // 현재 날짜와 현재 달에 1일의 날짜 객체 생성
+            var date = new Date();
+            var nowY = date.getFullYear(); // 현재 연도
+            var nowM = date.getMonth(); // 현재 월
+            var nowD = date.getDate(); // 현재 일
+
+            // 연도, 월을 입력받지 않은 경우 현재 날짜의 연도, 월 정보를 사용함
+            y = (y != undefined) ? y : nowY;
+            m = (m != undefined) ? m - 1 : nowM;
+
+            // 현재 월의 1일 정보
+            var theDate = new Date(y, m, 1);
+            var theDay = theDate.getDay(); // 해당 월의 첫 번째 날의 요일
+
+            // 1월부터 12월까지 마지막 일을 배열로 저장
+            var last = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+            // 윤년 계산
+            if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) last[1] = 29;
+
+            // 현재 월의 마지막 일 정보
+            var lastDate = last[m];
+
+            // 현재 월의 달력에 필요한 행의 개수
+            var row = Math.ceil((theDay + lastDate) / 7);
+
+            // 요일 행 생성
+            var calendar = "<table>";
+            calendar += "<tr>";
+            calendar += "<th>SUN</th>";
+            calendar += "<th>MON</th>";
+            calendar += "<th>TUE</th>";
+            calendar += "<th>WED</th>";
+            calendar += "<th>THU</th>";
+            calendar += "<th>FRI</th>";
+            calendar += "<th>SAT</th>";
+            calendar += "</tr>";
+
+            // 1일부터 기록
+            var dNum = 1;
+
+            // 이중 for문을 이용해 달력 테이블 생성
+            for (var i = 1; i <= row; i++) {
+                calendar += "<tr>"; // 행 생성
+
+                for (var k = 0; k < 7; k++) { // 열 생성
+                    // 빈 날짜는 빈칸으로 표기
+                    if (i === 1 && k < theDay || dNum > lastDate) {
+                        calendar += "<td> &nbsp; </td>";
+                    } else {
+                        // 오늘 날짜
+                        if (dNum === nowD && y === nowY && m === nowM) {
+                            calendar += "<td id='today'>" + dNum + "</td>";
+                        } else {
+                            // 오늘이 아닌 날짜
+                            calendar += "<td>" + dNum + "</td>";
+                        }
+                        dNum++;
+                    }
+                }
+                calendar += "</tr>";
+            }
+
+            // innerHTML 값을 달력 테이블로 변경
+            calendar += "</table>";
+            calendar_box.innerHTML = calendar;
+        }
+
+        // 현재 월과 연도로 달력 출력
+        displayCurrentMonth(); // 상단에 월 표시
+        printCalendar(); // 달력 표시
+    </script>
+</body>
+</html>

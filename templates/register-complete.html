@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>등록 완료 - 마이멜로디</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <style>
+        body {
+            display: flex;
+            font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #fff4f6;
+        }
+        .profile-info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .profile-info img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .confirmation-message h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .confirmation-message p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .confirmation-message button {
+            background-color: palevioletred;
+            color: white;
+            border: none;
+            width: 40%;
+            padding: 5px 20px;
+            font-size: 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        .confirmation-message button:hover {
+            background-color: #f06587;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-info">
+    <img id="profileImage" alt="선택한 프로필 이미지">
+    </div>
+
+    <div class="confirmation-message">
+        <h2 id="welcomeMessage"></h2>
+        <p>입력하신 메일 주소로 인증 링크가 발송되었어요!</p><br>
+        <button onclick="goToLogin()">👍</button>
+    </div>
+
+    <script>
+        // 세션 스토리지에서 데이터 가져오기
+        const nickname = sessionStorage.getItem('nickname');
+        const profileImageSrc = sessionStorage.getItem('profileImage');
+
+        // 데이터 페이지에 표시
+        document.getElementById('profileImage').src = profileImageSrc;
+        document.getElementById('welcomeMessage').textContent = `환영합니다, ${nickname} 님!`;
+
+        function goToLogin() {
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>

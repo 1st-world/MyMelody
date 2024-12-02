@@ -1,0 +1,229 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    height: 100vh;
+    padding: 20px;
+    padding-top: 10px;
+    background-color: #ffffff;
+    align-items: center;
+    position: relative; /* 하단에 위치한 아이콘 배치를 위해 relative 설정 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar img {
+    width: auto;
+    max-width: 170px;
+    height: auto;
+    align-self: center; /* 이미지 자체를 가운데 정렬 */
+}
+/* 마이멜로디 로고 링크 스타일 (버튼 없이) */
+.sidebar a.logo-link {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+    width: auto; /* 로고 링크의 너비를 이미지 크기에 맞게 설정 */
+    margin: 0 auto; /* 링크 자체를 가로 가운데 정렬 */
+    margin-bottom: 20px;
+}
+/* 나머지 링크들에 적용될 버튼 스타일 */
+.sidebar a.button-link {
+    text-decoration: none;
+    color: #ff7f7f;
+    font-size: 20px;
+    margin: 40px 0;
+    display: flex;
+    align-items: center;
+    background-color: #fff4f6;
+    padding: 10px 20px;
+    border-radius: 30px;
+    width: 80%;
+    text-align: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+    position: relative;
+}
+.sidebar a.button-link:hover {
+    transform: scale(1.1);
+    background-color: #ffebeb;
+}
+.sidebar a.button-link::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 60px;
+    font-size: 12px;
+    color: #000;
+}
+.sidebar-bottom {
+    display: flex;
+    margin: 10px;
+    margin-top: auto;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.sidebar-bottom a {
+    text-decoration: none;
+    color: inherit;
+}
+.sidebar-bottom i {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+}
+.logout-modal {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: 0.1s;
+}
+.logout-modal-content {
+    background-color: #fff4f6;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.logout-modal-content p {
+    margin: 20px;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.btn-confirm {
+    background-color: #ff7f7f;
+    color: white;
+    font-size: 16px;
+    margin: 7px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.btn-cancel {
+    background-color: #ccc;
+    color: black;
+    font-size: 16px;
+    margin: 7px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.btn-confirm:hover, .btn-cancel:hover {
+    opacity: 0.8;
+}
+
+
+.right-panel {
+    width: 20%;
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.profile p {
+    margin: 0;
+}
+.quote, .progress, .calendar {
+    background-color: #ffffff;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 0px;
+    text-align: center;
+    font-size: 15px;
+}
+.quote-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+.quote-text p {
+    margin: 5px 0;
+}
+.progress-bar {
+    background-color: #ffdbdb;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.progress-fill {
+    background-color: #ff7f7f;
+    width: 50%; /* width: {{ achievement_rate }}%; */
+    height: 100%;
+    border-radius: 5px;
+}
+.calendar {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 0px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    position: relative; /* 부모 요소를 기준으로 위치를 설정할 수 있도록 함 */
+    table-layout: fixed; /* 고정된 레이아웃 사용 */
+}
+.calendar p {
+    margin: 15px;
+}
+.calendar input {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    position: fixed;
+}
+.calendar input:focus {
+    outline: none;
+    position: fixed;
+}
+#current-month {
+    font-size: 15px; 
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+.calendar-box {
+    margin-top: 10px;
+    padding: 5px;
+    width: 100%; /* 달력이 부모 요소 너비에 맞게 확장되도록 */
+    text-align: center;
+    position: static; /* 부모 안에서 위치를 자동으로 결정 */
+}
+.calendar-box table {
+    width: 100%; /* 달력 테이블이 부모 너비에 맞도록 */
+    border-collapse: collapse;
+}
+.calendar-box th, .calendar-box td {
+    width: 14.28%; /* 열 너비를 동일하게 설정 (100% ÷ 7일) */
+    padding: 3px;
+    font-size: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+#today {
+    background-color: #ffcccc;
+}

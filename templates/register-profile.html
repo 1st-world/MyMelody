@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필 등록 - 마이멜로디</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #fff4f6;
+        }
+        .logo {
+            display: flex;
+            width: 250px;
+            margin-bottom: 0;
+            justify-content: center;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 30rem;
+            max-height: 35rem;
+            padding: 20px;
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0));
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(240, 166, 166, 0.224);
+            backdrop-filter: blur(0px);
+            box-sizing: border-box;
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+        main:hover {
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        fieldset {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 20px;
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 4px 30px rgba(240, 101, 101, 0.191);
+            backdrop-filter: blur(0px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            position: relative;
+        }
+        label {
+            margin-bottom: 5px;
+            color: black;
+            font-size: 14px;
+        }
+        input, select {
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            color: black;
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 5px;
+        }
+        input::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+        input:focus, select:focus {
+            outline: none;
+        }
+        button {
+            width: 100%;
+            height: 40px;
+            background-color: palevioletred;
+            color: white;
+            box-shadow: 0 4px 16px rgba(246, 114, 156, 0.3);
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            border: none;
+            margin-top: 20px;
+            transition: 0.3s;
+            text-align: center;
+            cursor: pointer;
+        }
+        button:hover {
+            background: linear-gradient(124.47deg, rgba(246, 114, 156, 0.8), rgba(246, 114, 156, 0.6), rgba(246, 114, 156, 0.8));
+        }
+        button:active {
+            position: relative;
+            top: 5px;
+            transition: 0.3s;
+        }
+        .error-message {
+            color: palevioletred;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+        .profile-avatars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .profile-avatars img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .profile-avatars img.selected {
+            border: 3px solid palevioletred;
+        }
+        .profile-image-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .folder-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 24px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 5px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .menu {
+            display: none;
+            position: absolute;
+            width: 130%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .menu button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: rgb(252, 201, 201);
+        }
+        @media (max-height: 600px) {
+            .logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="logo" src="/static/images/mymelody_logo.png" alt="서비스 로고">
+    <main>
+        <form id="registerForm" action="javascript:void(0);">
+            <label for="profileImageInput">프로필 이미지 설정</label>
+            <fieldset>
+                <div class="profile-image-container">
+                    <img id="profileImage" class="profile-image" src="/static/images/profile/profile_img1.jpg" alt="프로필 기본 이미지">
+                    <span class="folder-icon">📁</span>
+                </div>
+                <input type="file" id="profileImageInput" accept="image/*">
+
+                <div class="menu" id="menu">
+                    <button type="button" id="takePhoto">사진 촬영하기</button>
+                    <button type="button" id="chooseFromFiles">내 PC에서 사진 선택하기</button>
+                </div>
+
+                <div class="profile-avatars">
+                    <img src="/static/images/profile/profile_img1.jpg" alt="아바타 1">
+                    <img src="/static/images/profile/profile_img2.jpg" alt="아바타 2">
+                    <img src="/static/images/profile/profile_img3.jpg" alt="아바타 3">
+                    <img src="/static/images/profile/profile_img4.jpg" alt="아바타 4">
+                    <img src="/static/images/profile/profile_img5.jpg" alt="아바타 5">
+                    <img src="/static/images/profile/profile_img6.jpg" alt="아바타 6">
+                </div>
+            </fieldset>
+            <button type="submit" id="completeRegistration">회원 가입 완료</button>
+        </form>
+    </main>
+
+    <script>
+        const profileImageInput = document.getElementById('profileImageInput');
+        const profileImage = document.getElementById('profileImage');
+        const avatars = document.querySelectorAll('.profile-avatars img');
+        const folderIcon = document.querySelector('.folder-icon');
+        const menu = document.getElementById('menu');
+        const takePhotoButton = document.getElementById('takePhoto');
+        const chooseFromFilesButton = document.getElementById('chooseFromFiles');
+
+        folderIcon.addEventListener('click', (event) => {
+            event.stopPropagation();
+            menu.style.display = 'block';
+        });
+
+        chooseFromFilesButton.addEventListener('click', () => {
+            profileImageInput.click();
+        });
+
+        // 파일 업로드 시 처리
+        profileImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const allowedExtensions = ['image/jpg', 'image/jpeg', 'image/png'];
+                if (!allowedExtensions.includes(file.type)) {
+                    alert('사진 파일은 .jpg/jpeg, .png 확장자만 업로드 가능합니다.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const dataUrl = event.target.result;
+                    profileImage.src = dataUrl;
+                    sessionStorage.setItem('profileImage', dataUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+            menu.style.display = 'none';
+        });
+
+        // 기본 아바타 선택 시 처리
+        avatars.forEach(avatar => {
+            avatar.addEventListener('click', () => {
+                avatars.forEach(img => img.classList.remove('selected'));
+                avatar.classList.add('selected');
+                profileImage.src = avatar.src;
+                menu.style.display = 'none';
+            });
+        });
+
+        takePhotoButton.addEventListener('click', () => {
+            alert("웹캠으로 사진 촬영 기능은 추후 업데이트 예정입니다.");
+            menu.style.display = 'none';
+        });
+
+        // 메뉴 외부 클릭 시 메뉴 숨기기
+        document.addEventListener('click', (event) => {
+            if (!menu.contains(event.target) && !folderIcon.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // 회원 가입 완료 버튼 클릭 시
+        document.getElementById('completeRegistration').addEventListener('click', () => {
+            const formData = new FormData();
+
+            if (profileImageInput.files.length > 0) {
+                // 사용자가 직접 파일을 업로드한 경우
+                formData.append('profileImage', profileImageInput.files[0]);
+                sessionStorage.setItem('profileImage', profileImageInput.files[0]);
+            } else {
+                // 기본 아바타를 선택한 경우 (이미지 URL에서 파일명만 추출)
+                const selectedImageUrl = profileImage.src;
+                const fileName = selectedImageUrl.substring(selectedImageUrl.lastIndexOf('/') + 1);  // 파일명만 추출
+                formData.append('profileImage', fileName);
+                sessionStorage.setItem('profileImage', selectedImageUrl);
+            }
+
+            // 서버에 데이터 전송
+            fetch('/user-register-profile', {
+                method: 'POST',
+                body: formData  // multipart/form-data 형식으로 전송
+            })
+            // 서버 응답 처리
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // alert(data.message);
+                    window.location.href = data.redirect_url;
+                } else if (data.message) {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생: ', error); // 오류 발생 시 console에 출력
+                alert('문제가 발생했습니다. 관리자에게 문의 바랍니다.');
+            });
+        });
+    </script>
+</body>
+</html>

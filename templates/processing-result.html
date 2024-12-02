@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>처리 결과</title>
+</head>
+<body>
+    <script>
+        // Python의 Jinja2 문법을 사용하고 있습니다. 편집기에서 문법 오류를 경고하더라도 정상일 수 있습니다.
+        async function processingResult() {
+            alert("{{ message }}");
+            {% if redirect_url %}
+            window.location.href = "{{ redirect_url }}";
+            {% else %}
+            window.close();
+            {% endif %}
+        }
+
+        // 페이지 로드 시 처리
+        window.onload = processingResult;
+    </script>
+</body>
+</html>

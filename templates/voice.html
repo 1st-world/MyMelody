@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 목소리 - 마이멜로디</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <link rel="stylesheet" href="/static/sidebar-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 기존 스타일 유지 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff4f6;
+            font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+        }
+        .progress-fill {
+            width: {{ achievement_rate }}%;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            width: 65%;
+            padding: 20px;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .voice-section {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .voice-section h2 {
+            font-size: 22px;
+            margin-top: 10px;
+        }
+        .voice-section ul {
+            font-size: 15px;
+            line-height: 1.8;
+            list-style-type: none;
+            padding: 0;
+        }
+        .voice-section li {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .voice-section li::before {
+            content: "•";
+            color: #ff7f7f;
+            margin-right: 10px;
+        }
+        .record-button {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .record-button i, .file-button i {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .record-button button, .file-button button {
+            font-size: 14px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff7f7f;
+            color: #fff;
+            cursor: pointer;
+        }
+        .file-button input {
+            display: none;
+        }
+        .image-gallery {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+        .image-container {
+            position: relative;
+            width: 150px;
+            height: 200px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-container:hover {
+            transform: scale(1.1);
+        }
+        .image-container img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .image-label {
+            font-size: 14px;
+            color: #333;
+            white-space: nowrap;
+            text-align: center;
+            margin-top: 10px;
+        }
+        /* 팝업 스타일 */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup {
+            display: flex;
+            background-color: #fff4f6;
+            padding: 20px;
+            border-radius: 10px;
+            width: 55%;
+            height: 80%;
+            position: relative;
+            flex-direction: column;
+        }
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff7f7f;
+            cursor: pointer;
+        }
+        .popup-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .left-button, .right-button {
+            padding: 15px 100px;
+            background-color: #fff4f6;
+            color: gray;
+            font-size: 22px;
+            font-weight: normal;
+            border: none;
+            cursor: pointer;
+        }
+        .left-button.selected, .right-button.selected {
+            color: black;
+            font-weight: bold;
+        }
+        .divider {
+            width: 1px;
+            height: 30px;
+            background-color: #aaaaaa;
+            margin: 0 10px;
+        }
+        #audio-container {
+            display: flex;
+            justify-content: center;
+        }
+        #lyrics-container {
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="/main" class="logo-link">
+            <img src="/static/images/mymelody_logo.png" alt="마이멜로디 로고">
+        </a>
+        <a href="/quest" class="button-link" data-text="퀘스트">🗝️</a>
+        <a href="/voice" class="button-link" data-text="AI 목소리">🎙️</a>
+        <a href="/wordle-index" class="button-link" data-text="영단어 게임">🎮</a>
+
+        <div class="sidebar-bottom">
+            <a href="/mypage"> <i class="fas fa-cog"></i> <!-- 설정 아이콘 --> </a>
+            <i class="fas fa-sign-out-alt" id="logoutIcon"></i> <!-- 로그아웃 아이콘 -->
+        </div>
+    </div>
+
+    <!-- 로그아웃 확인 모달 -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <p>로그아웃 하시겠습니까?</p>
+            <button id="confirmLogout" class="btn-confirm">예</button>
+            <button id="cancelLogout" class="btn-cancel">아니요</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="voice-section">
+            <h2>AI 목소리 학습</h2>
+            <ul>
+                <li>가급적 주변 소음이 없는 조용한 공간에서 녹음해 주세요.</li>
+                <li>한 번 학습시킨 음성 모델은 기본적으로 수정할 수 없으므로 신중하게 선택해 주세요.</li>
+                <li>녹음된 음역대가 다양할수록 더 좋은 결과를 기대할 수 있습니다.</li>
+                <li>AI 목소리 학습 완료까지 최소 1시간 이상 소요될 수 있습니다.</li>
+            </ul>
+
+            <div class="file-button">
+                <i class="fas fa-file-upload"></i>
+                <button onclick="triggerFileUpload()">파일 업로드</button>
+                <input type="file" id="fileInput" onchange="uploadFile()">
+            </div>
+
+
+            <h2 class="song-list" style="margin-top: 40px;">노래 목록</h2>
+            <div class="image-gallery">
+                <div class="image-container" onclick="showPopup('Shaboozey - A Bar Song (Tipsy)', '/static/musics/Shaboozey - A Bar Song (Tipsy) (Original).mp3')">
+                    <img src="/static/images/music_1_A_bar_song_tipsy.jpg" alt="이미지 1">
+                    <span class="image-label">Shaboozey - A Bar Song (Tipsy)</span>
+                </div>
+                <div class="image-container" onclick="showPopup('Giveon - Heartbreak Anniversary', '/static/musics/Giveon - Heartbreak Anniversary (Original).mp3')">
+                    <img src="/static/images/music_2_Heartbreak_anniversary.jpg" alt="이미지 2">
+                    <span class="image-label">Giveon - Heartbreak Anniversary</span>
+                </div>
+                <div class="image-container" onclick="showPopup('The Beatles - Let It Be', '/static/musics/The Beatles - Let It Be (Original).mp3')">
+                    <img src="/static/images/music_3_Let_it_be.jpg" alt="이미지 3">
+                    <span class="image-label">The Beatles - Let It Be</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup">
+            <span class="close-btn" onclick="closePopup()">✕</span>
+            <div class="popup-buttons">
+                <button class="left-button selected" id="left-button" onclick="switchDefault()">가수의 목소리</button>
+                <div class="divider"></div>
+                <button class="right-button" id="right-button" onclick="switchAI()">AI 내 목소리</button>
+            </div>
+            <div id="audio-container"></div>
+            <div id="lyrics-container"></div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="profile">
+            <img id="profile-pic" src="/static/images/profile/{{ profile_img }}" alt="프로필 사진">
+            <div>
+                <p id="user-info"> {{ nickname }} 님! 오늘도 열공🔥</p>
+            </div>
+        </div>
+        <div class="quote">
+            <p style="font-weight: bold;">📣 명언 영어로 보기</p>
+            <div class="quote-text">
+                <p id="quote-ko">데이터 불러오는 중…</p>
+                <p id="quote-en">-</p>
+            </div>
+        </div>
+        <div class="progress">
+            <p style="font-weight: bold;">🎯 목표 달성률</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        <div class="calendar">
+            <p style="font-weight: bold;">🗓️ 출석 달력</p>
+            <input type="text" id="current-date" readonly>
+            <div class="calendar-box">
+                <div id="current-month"></div>
+                <!-- 달력이 표시될 영역 -->
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 파일 업로드 및 녹음 함수
+        function triggerFileUpload() {
+            document.getElementById('fileInput').click();
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (file) {
+                alert(`파일 ${file.name} 업로드 완료!`);
+            }
+        }
+
+        let selectedMp3Url = '';
+
+        function showPopup(songTitle, mp3Url) {
+            selectedMp3Url = mp3Url;
+            document.getElementById('popup-overlay').style.display = 'flex';
+            switchDefault();
+
+            // 선택한 곡에 맞는 가사 설정
+            let lyrics = '';
+            if (songTitle === 'Shaboozey - A Bar Song (Tipsy)') {
+                lyrics = `
+My baby want a Birkin, she's been tellin' me all night long
+마이 베이비 원트 어 버킨, 쉬즈 빈 텔린 미 올 나잇 롱
+버킨백을 원하는 여자 친구, 밤새 갖고 싶은 걸 얘기하네
+
+Gasoline and groceries, the list goes on and on
+개솔린 앤드 그로서리즈, 더 리스트 고우즈 온 앤 온
+가솔린에 식료품, 끝도 없는 필요 목록들
+
+This nine-to-five ain't workin', why the hell do I work so hard?
+디스 나인 투 파이브 에인트 워킨, 와이 더 헬 두 아이 워크 소 하드?
+매일 일해봐야 의미도 없는데, 대체 왜 이리 열심히 일하는 걸까
+
+I can't worry 'bout my problems, I can't take 'em when I'm gone, uh
+아이 캔트 워리 바웃 마이 프라블럼즈, 아이 캔트 테이크 '엠 웬 아임 건, 어
+사실 이런 걱정은 불안하지 않아, 결국 내가 떠나면 그만일 뿐이지
+
+One, here comes the two to the three to the four
+원, 히어 컴즈 더 투 투 더 쓰리 투 더 포
+한 잔, 두 잔에 세 잔 얹고 네 잔
+
+Tell 'em "Bring another round," we need plenty more
+텔 '엠 "브링 어나더 라운드," 위 니드 플렌티 모어
+하나 더 가져오라 해, 우리 아직 한창이야
+
+Two-steppin' on the table, she don't need a dance floor
+투 스텝핀 온 더 테이블, 쉬 돈트 니드 어 댄스 플로어
+테이블 위에서 스텝을 밟는 그녀, 무도장이 따로 없네
+
+Oh my, good Lord
+오 마이, 굿 로드
+오 이런, 세상에
+
+Someone pour me up a double shot of whiskey
+섬원 포어 미 업 어 더블 샷 오브 위스키
+누가 위스키 더블샷 좀 따라줘
+
+They know me and Jack Daniel's got a history
+데이 노우 미 앤 잭 대니얼즈 갓 어 히스토리
+다들 나와 잭 다니엘의 역사를 잘 알고 있지
+
+There's a party downtown near 5th Street
+데얼즈 어 파티 다운타운 니어 피프스 스트리트
+5번가 근처 시내에선 파티가 한창이고
+
+Everybody at the bar gettin' tipsy
+에브리바디 앳 더 바 겟틴 팁시
+술집에 모인 사람들 전부 취했어
+
+I've been Boozey since I left
+아이브 빈 부지 씬스 아이 레프트
+난 고향을 떠날 때부터 "부지"였고
+
+I ain't changin' for a check
+아이 에인트 체인진 포어 어 첵
+돈 때문에 변할 일 없어
+
+Tell my ma, I ain't forget
+텔 마이 마, 아이 에인트 포르겟
+엄마한테 전해줘, 잊지 않겠다고
+
+Woke up drunk at 10 a.m.​
+워크 업 드렁크 앳 텐 에이 엠
+술 취한 채 맞이한 아침 10시
+
+We gon' do this shit again
+위 곤 두 디스 쉿 어게인
+우린 이 짓을 또 반복하겠지
+
+Tell your girl to bring a friend, oh Lord
+텔 유어 걸 투 브링 어 프렌드, 오 로드
+네 여친한테 친구도 데려와달라 해줘
+
+One, here comes the two to the three to the four
+원, 히어 컴즈 더 투 투 더 쓰리 투 더 포
+한 잔, 두 잔에 세 잔 얹고 네 잔
+
+Tell 'em "Bring another round," we need plenty more
+텔 '엠 "브링 어나더 라운드," 위 니드 플렌티 모어
+하나 더 가져오라 해, 우리 아직 한창이야
+
+Two-steppin' on the table, she don't need a dance floor
+투 스텝핀 온 더 테이블, 쉬 돈트 니드 어 댄스 플로어
+테이블 위에서 스텝을 밟는 그녀, 무도장이 따로 없네
+
+Oh my, good Lord
+오 마이, 굿 로드
+오 이런, 세상에
+
+Someone pour me up a double shot of whiskey
+섬원 포어 미 업 어 더블 샷 오브 위스키
+누가 위스키 더블샷 좀 따라줘
+
+They know me and Jack Daniel's got a history
+데이 노우 미 앤 잭 대니얼즈 갓 어 히스토리
+다들 나와 잭 다니엘의 역사를 잘 알고 있지
+
+There's a party downtown near 5th Street
+데얼즈 어 파티 다운타운 니어 피프스 스트리트
+5번가 근처 시내에선 파티가 한창이고
+
+Everybody at the bar gettin' tipsy
+에브리바디 앳 더 바 겟틴 팁시
+술집에 모인 사람들 전부 취했어
+
+One, here comes the two to the three to the four
+원, 히어 컴즈 더 투 투 더 쓰리 투 더 포
+한 잔, 두 잔에 세 잔 얹고 네 잔
+
+When it's last call and they kick us out the door
+웬 잇츠 래스트 콜 앤드 데이 킥 어스 아웃 더 도어
+마감 전 마지막 주문, 가게 주인은 손님들 쫓아내는 중
+
+It's gettin' kind of late, but the ladies want some
+잇츠 겟틴 카인드 오브 레이트, 벗 더 레이디스 원트 썸
+꽤나 늦은 것 같은데, 여자들은 더 마시고 싶대
+
+Oh my, good Lord (Tell 'em drinks on me)
+오 마이, 굿 로드 (텔 '엠 드링크스 온 미)
+오 이런, 세상에 (술은 내가 쏜다고 전해)
+
+Someone pour me up a double shot of whiskey
+섬원 포어 미 업 어 더블 샷 오브 위스키
+누가 위스키 더블샷 좀 따라줘
+
+They know me and Jack Daniel's got a history
+데이 노우 미 앤 잭 대니얼즈 갓 어 히스토리
+다들 나와 잭 다니엘의 역사를 잘 알고 있지
+
+At the bottom of a bottle, gon' miss me
+앳 더 바텀 오브 어 바틀, 곤 미스 미
+술병이 바닥을 보일 때쯤, 내가 그리워지겠지
+
+Everybody at the bar gettin' tipsy
+에브리바디 앳 더 바 겟틴 팁시
+술집에 모인 사람들 전부 취했어
+
+Everybody at the bar gettin' tipsy
+에브리바디 앳 더 바 겟틴 팁시
+술집 사람들 모두가 취했어
+
+That's fuckin' messed up, bro, they kicked me out the bar
+댓츠 퍼킹 메스드 업, 브로, 데이 킥트 미 아웃 더 바
+완전 큰일났는데 친구, 나 결국 술집에서 쫓겨났지
+`;
+            } else if (songTitle === 'The Beatles - Let It Be') {
+                lyrics = `
+When I find myself in times of trouble
+웬 아 파인 마이셀프 인 타임스 오브 트러블
+내가 곤경에 처해 있을 때면
+
+Mother Mary comes to me
+마더 메리 컴스 투 미
+어머니 메리가 나에게 다가와
+
+Speaking words of wisdom, let it be.
+스피킹 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 해주시죠, 순리에 맡기라고
+
+And in my hour of darkness
+앤 인 마이 아월 오브 다크네스
+그리고 내가 암흑의 시간 속에 있을 때
+
+She is standing right in front of me
+쉬 이즈 스탠딩 라잇 인 프론 옵 미
+그녀는 내 앞에 서서
+
+Speaking words of wisdom, let it be.
+스피킹 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 해주시죠, 순리에 맡기라고
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Whisper words of wisdom, let it be.
+위스퍼 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 속삭여 주시죠, 순리에 맡기라고
+
+And when the broken hearted people
+앤 웬 더 브로큰 헐팃 피플
+그리고 마음의 상처를 지닌 사람들이
+
+Living in the world agree,
+리빙 인 더 월드 어그리,
+한 마음으로 세상을 살아갈 때
+
+There will be an answer, let it be.
+대얼 윌 비 언 앤스워, 렛 잇 비
+해답이 있을 거에요, 순리에 맡기세요
+
+For though they may be parted there is
+폴 도우 대이 메이 비 파알디드 대얼 이즈
+비록 그들이 헤어지게 된다고 해도
+
+Still a chance that they will see
+스틸 어 찬스 댓 대이 윌 씨
+여전히 그들에게 다시 만날 기회는 있어요
+
+There will be an answer, let it be
+대얼 윌 비 언 앤스워, 렛 잇 비
+해답이 있을 거에요, 순리에 맡기세요
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+There will be an answer, let it be
+대얼 윌 비 언 앤스워, 렛 잇 비
+해답이 있을 거에요, 순리에 맡기세요
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Whisper words of wisdom, let it be.
+위스퍼 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 속삭여 주시죠, 순리에 맡기라고
+
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Whisper words of wisdom, let it be.
+위스퍼 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 속삭여 주시죠, 순리에 맡기라고
+
+And when the night is cloudy,
+엔 웬 더 나잇 이즈 클라우디
+그리고 구름이 덮인 밤에도
+
+There is still a light that shines on me,
+대얼 이즈 스틸 어 라잇 댓 샤인즈 온 미
+아직 나를 밝혀줄 빛이 있죠
+
+Shine on until tomorrow, let it be.
+샤인 온 언틸 투모로우, 렛 잇 비
+내일까지 밝혀줄, 순리에 맡기세요
+
+I wake up to the sound of music
+아 웨컵 투 더 사운드 옵 뮤직
+음악 소리에 잠에서 깨어나면
+
+Mother Mary comes to me
+마더 메리 컴스 투 미
+어머니 마리가 나에게 다가와
+
+Speaking words of wisdom, let it be.
+위스퍼 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 해주시죠, 순리에 맡기라고
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be.
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+There will be an answer, let it be.
+대얼 윌 비 언 앤스워, 렛 잇 비
+해답이 있을 거에요, 순리에 맡기세요
+
+Let it be, let it be,
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be,
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+There will be an answer, let it be.
+대얼 윌 비 언 앤스워, 렛 잇 비
+해답이 있을 거에요, 순리에 맡기세요
+
+Let it be, let it be,
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Let it be, let it be,
+렛 잇 비, 렛 잇 비
+그냥 두어라, 그대로 두어라
+
+Whisper words of wisdom, let it be.
+위스퍼 워즈 오브 위즈덤, 렛 잇 비
+지혜의 말씀을 속삭여 주시죠, 순리에 맡기라고
+`; 
+            } else if (songTitle === 'Giveon - Heartbreak Anniversary') {
+                lyrics = `
+Balloons are deflated
+벌룬즈 얼 디플레이트
+바람 빠진 풍선들
+
+Guess they look lifeless like me
+게스 데이 룩 라이플리스 라이크 미
+생기 잃은 내 모습 같아
+
+We miss you on your side of the bed, mmm
+위 미스 유 온 유어 사이드 옵 더 베드, 음
+내 옆에 누워 있던 네가 그리워
+
+Still got your things here
+스틸 갓 유어 띵즈 히어
+여전히 남아있는 너의 물건들
+
+And they stare at me like souvenirs
+앤 데이 스테어 엣 미 라이크 수버니어즈
+마치 기념품처럼 날 보고 있어
+
+Don't wanna let you out my head
+돈 워너 렛 유 아웃 마이 헤드
+널 잊고 싶지 않아
+
+Just like the day that I met you
+저스트 라이크 더 데이 댓 아이 멧 유
+널 만난 날처럼
+
+The day I thought forever
+더 데이 아이 소트 포레버
+영원을 생각했던 그날
+
+Said that you love me
+셋 댓 유 럽 미
+날 사랑한다고 했었지
+
+But that'll last for never
+벗 댓일 래스트 폴 네버
+하지만 끝나 버렸지
+
+It's cold outside
+잇츠 콜드 아웃사이드
+밖은 추워
+
+Like when you walked out my life
+라이크 웬 유 워크트 아웃 마이 라이프
+네가 내 곁을 떠났을 때처럼
+
+Why you walk out my life?
+와이 유 워크 아웃 마이 라이프
+왜 날 떠난 거야?
+
+I get like this every time
+아이 겟 라이크 디스 에브리 타임
+난 매번 이래
+
+On these days that feel like you and me
+온 디즈 데이즈 댓 필 라이크 유 앤 미
+너와 내가 함께인 거처럼 느껴지는 요즘
+
+Heartbreak anniversary
+하트브레이크 애니버서리
+이별 기념일에
+
+'Cause I remember every time
+커즈 아이 리멤버 에브리 타임
+왜냐면 매번 생각나니까
+
+On these days that feel like you and me
+온 디즈 데이즈 댓 필 라이크 유 앤 미
+너와 내가 함께인 거처럼 느껴지는 요즘
+
+Heartbreak anniversary
+하트브레이크 애니버서리
+이별 기념일에
+
+Do you ever think of me?
+두 유 에버 띵크 옵 미
+내 생각 해본 적 있니?
+
+no
+노
+(Ooh) no-no, no
+노노노
+(Ooh, ooh, ooh) ooh, nah
+오우, 나
+
+I'm buildin' my hopes up
+암 빌딩 마이 홉스 업
+난 희망을 키우고 있어
+
+Like presents unopened 'til this day
+라이크 프레젠츠 언오픈드 틸 디스 데이
+오늘까지 열어보지 않은 선물들처럼
+
+I still see the messages you read, mmm
+아이 스틸 씨 더 메시지스 유 리드, 음
+네가 읽은 메시지를 여전히 보고 있어
+
+I'm foolishly patient
+아이엠 풀리쉬리 페이션트
+난 바보처럼 참아
+
+(Foolishly patient)
+풀리쉬리 페이션트
+
+Can't get past the taste of your lips
+캔트 겟 패스트 더 테이스트 옵 유어 립스
+네 입술을 잊을 수 없어
+
+(Taste of your lips)
+테이스트 옵 유어 립스
+
+Don't wanna let you out my head
+돈 워너 렛 유 아웃 마이 헤드
+널 잊고 싶지 않아
+
+Just like the day that I met you
+저스트 라이크 더 데이 댓 아이 멧 유
+널 만난 날처럼
+
+The day I thought forever
+더 데이 아이 소트 포레버
+영원을 생각했던 그날
+
+Said that you love me
+셋 댓 유 럽 미
+날 사랑한다고 했었지
+
+But that'll last for never
+벗 댓일 래스트 폴 네버
+하지만 끝나 버렸지
+
+It's cold outside
+잇츠 콜드 아웃사이드
+밖은 추워
+
+Like when you walked out my life
+라이크 웬 유 워크트 아웃 마이 라이프
+네가 내 곁을 떠났을 때처럼
+
+Why you walk out my life? (My life)
+와이 유 워크 아웃 마이 라이프
+왜 날 떠난 거야?
+
+I get like this every time
+아이 겟 라이크 디스 에브리 타임
+난 매번 이래
+
+On these days that feel like you and me
+온 디즈 데이즈 댓 필 라이크 유 앤 미
+너와 내가 함께인 거처럼 느껴지는 요즘
+
+Heartbreak anniversary
+하트브레이크 애니버서리
+이별 기념일에
+
+'Cause I remember every time
+커즈 아이 리멤버 에브리 타임
+왜냐면 매번 생각나니까
+
+On these days that feel like you and me
+온 디즈 데이즈 댓 필 라이크 유 앤 미
+너와 내가 함께인 거처럼 느껴지는 요즘
+
+Heartbreak anniversary
+하트브레이크 애니버서리
+이별 기념일에
+
+Do you ever think of me?
+두 유 에버 띵크 옵 미
+내 생각 해본 적 있니?
+
+'Cause I think of you, think of you
+커즈 아이 띵크 옵 유, 띵크 옵 유
+왜냐면 난 널 생각해
+`;
+            }
+
+            // 가사 표시
+            const lyricsContainer = document.getElementById('lyrics-container');
+            lyricsContainer.scrollTop = 0;
+            lyricsContainer.innerText = lyrics;
+        }
+
+        function closePopup() {
+            document.getElementById('audioControls').pause();
+            document.getElementById('popup-overlay').style.display = 'none';
+        }
+
+        function switchDefault() {
+            const leftButton = document.getElementById('left-button');
+            const rightButton = document.getElementById('right-button');
+
+            if (!leftButton.classList.contains('selected')) {
+                leftButton.classList.add('selected');
+            }
+            rightButton.classList.remove('selected');
+
+            // 선택한 MP3 음원 재생
+            const audioContainer = document.getElementById('audio-container');
+            audioContainer.innerHTML = `
+                <audio controls id="audioControls" style="width: 500px;">
+                    <source src="${selectedMp3Url}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            `;
+        }
+
+        function switchAI() {
+            const leftButton = document.getElementById('left-button');
+            const rightButton = document.getElementById('right-button');
+
+            if (!rightButton.classList.contains('selected')) {
+                rightButton.classList.add('selected');
+            }
+            leftButton.classList.remove('selected');
+
+            const audioContainer = document.getElementById('audio-container');
+            const aiSongUrl = selectedMp3Url.replace(' (Original).mp3', '_combined.mp3'); // 원본 URL에서 대체
+            audioContainer.innerHTML = `
+                <audio controls id="audioControls" style="width: 500px;">
+                    <source src="${aiSongUrl}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            `;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutModal = document.getElementById('logoutModal');
+
+            // 로그아웃 아이콘 클릭 시 모달
+            document.getElementById('logoutIcon').addEventListener('click', function() {
+                logoutModal.style.display = 'flex';
+                logoutModal.style.opacity = 1;
+            });
+            document.getElementById('confirmLogout').addEventListener('click', function() {
+                window.location.href = 'user-logout';
+            });
+            document.getElementById('cancelLogout').addEventListener('click', function() {
+                logoutModal.style.opacity = 0;
+                setTimeout(() => {
+                    logoutModal.style.display = 'none';
+                }, 100);
+            });
+        });
+    </script>
+
+    <script>
+        // 명언 데이터
+        const quotes = [
+            { ko: "고통 없이는 얻는 것도 없다.", en: "No pain, no gain." },
+            { ko: "배움은 결코 끝나지 않는다.", en: "Learning never ends." },
+            { ko: "오늘 할 수 있는 일을 내일로 미루지 마라.", en: "Do not put off until tomorrow what you can do today." },
+            { ko: "지식은 힘이다.", en: "Knowledge is power." },
+            { ko: "실패는 성공의 어머니다.", en: "Failure is the mother of success." },
+            { ko: "노력은 결코 배신하지 않는다.", en: "Effort never betrays." },
+            { ko: "자신을 믿어라.", en: "Believe in yourself." },
+            { ko: "한 걸음씩 앞으로 나아가라.", en: "Take one step forward." },
+            { ko: "꿈을 크게 가져라.", en: "Dream big." },
+            { ko: "매일 조금씩 나아져라.", en: "Get a little better every day." },
+            { ko: "할 수 있다고 믿어라.", en: "Believe you can." },
+            { ko: "자신의 길을 찾아라.", en: "Find your own path." },
+            { ko: "지금 행동하라.", en: "Act now." },
+            { ko: "기회는 준비된 자에게 온다.", en: "Opportunity comes to those who are prepared." },
+            { ko: "절대 포기하지 마라.", en: "Never give up." },
+            { ko: "자신의 잠재력을 믿어라.", en: "Believe in your potential." },
+            { ko: "자신을 발전시켜라.", en: "Develop yourself." },
+            { ko: "성공은 노력의 결과다.", en: "Success is the result of effort." },
+            { ko: "미래는 지금 만든다.", en: "The future is made now." },
+            { ko: "꾸준함이 열쇠다.", en: "Consistency is the key." }
+        ];
+
+        // 랜덤 명언 선택
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const randomQuote = quotes[randomIndex];
+            document.getElementById("quote-ko").innerText = randomQuote.ko;
+            document.getElementById("quote-en").innerText = randomQuote.en;
+        }
+
+        // 페이지 로드 시 명언 표시
+        window.onload = displayRandomQuote;
+        function displayCurrentMonth() {
+            var currentDate = new Date(); // 현재 날짜 객체 생성
+            var monthNames = [
+                "1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월"
+            ];
+            var currentMonth = currentDate.getMonth(); // 현재 월 가져오기 (0부터 시작)
+
+            document.getElementById("current-month").innerHTML = monthNames[currentMonth];        
+        }
+
+        // 달력을 그리는 함수
+        function printCalendar(y, m) {
+            var calendar_box = document.getElementById("calendar");
+
+            // 현재 날짜와 현재 달에 1일의 날짜 객체 생성
+            var date = new Date();
+            var nowY = date.getFullYear(); // 현재 연도
+            var nowM = date.getMonth(); // 현재 월
+            var nowD = date.getDate(); // 현재 일
+
+            // 연도, 월을 입력받지 않은 경우 현재 날짜의 연도, 월 정보를 사용함
+            y = (y != undefined) ? y : nowY;
+            m = (m != undefined) ? m - 1 : nowM;
+
+            // 현재 월의 1일 정보
+            var theDate = new Date(y, m, 1);
+            var theDay = theDate.getDay(); // 해당 월의 첫 번째 날의 요일
+
+            // 1월부터 12월까지 마지막 일을 배열로 저장
+            var last = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+            // 윤년 계산
+            if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) last[1] = 29;
+
+            // 현재 월의 마지막 일 정보
+            var lastDate = last[m];
+
+            // 현재 월의 달력에 필요한 행의 개수
+            var row = Math.ceil((theDay + lastDate) / 7);
+
+            // 요일 행 생성
+            var calendar = "<table>";
+            calendar += "<tr>";
+            calendar += "<th>SUN</th>";
+            calendar += "<th>MON</th>";
+            calendar += "<th>TUE</th>";
+            calendar += "<th>WED</th>";
+            calendar += "<th>THU</th>";
+            calendar += "<th>FRI</th>";
+            calendar += "<th>SAT</th>";
+            calendar += "</tr>";
+
+            // 1일부터 기록
+            var dNum = 1;
+
+            // 이중 for문을 이용해 달력 테이블 생성
+            for (var i = 1; i <= row; i++) {
+                calendar += "<tr>"; // 행 생성
+
+                for (var k = 0; k < 7; k++) { // 열 생성
+                    // 빈 날짜는 빈칸으로 표기
+                    if (i === 1 && k < theDay || dNum > lastDate) {
+                        calendar += "<td> &nbsp; </td>";
+                    } else {
+                        // 오늘 날짜
+                        if (dNum === nowD && y === nowY && m === nowM) {
+                            calendar += "<td id='today'>" + dNum + "</td>";
+                        } else {
+                            // 오늘이 아닌 날짜
+                            calendar += "<td>" + dNum + "</td>";
+                        }
+                        dNum++;
+                    }
+                }
+                calendar += "</tr>";
+            }
+
+            // innerHTML 값을 달력 테이블로 변경
+            calendar += "</table>";
+            calendar_box.innerHTML = calendar;
+        }
+
+        // 현재 월과 연도로 달력 출력
+        displayCurrentMonth(); // 상단에 월 표시
+        printCalendar(); // 달력 표시
+    </script>
+</body>
+</html>

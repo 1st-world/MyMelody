@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 가입 - 마이멜로디</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #fff4f6;
+        }
+        .logo {
+            display: flex;
+            width: 250px;
+            margin-bottom: 0;
+            justify-content: center;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 30rem;
+            max-height: 35rem;
+            padding: 20px;
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.0));
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(240, 166, 166, 0.224);
+            backdrop-filter: blur(0px);
+            box-sizing: border-box;
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+        main:hover {
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        fieldset {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 20px;
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.0), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 4px 30px rgba(240, 101, 101, 0.191);
+            backdrop-filter: blur(0px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            position: relative;
+        }
+        fieldset:hover {
+            background: linear-gradient(124.47deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5));
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        label {
+            margin-bottom: 5px;
+            color: black;
+            font-size: 14px;
+        }
+        input, select {
+            border: none;
+            background-color: transparent;
+            font-size: 16px;
+            color: black;
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 5px;
+            position: relative;
+        }
+        input::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+        input:focus, select:focus {
+            outline: none;
+        }
+        button {
+            width: 100%;
+            height: 40px;
+            background-color: palevioletred;
+            color: white;
+            box-shadow: 0 4px 16px rgba(246, 114, 156, 0.3);
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 15px;
+            border: none;
+            margin-top: 20px;
+            transition: 0.3s;
+            text-align: center;
+            cursor: pointer;
+        }
+        button:hover {
+            background: linear-gradient(124.47deg, rgba(246, 114, 156, 0.8), rgba(246, 114, 156, 0.6), rgba(246, 114, 156, 0.8));
+        }
+        button:active {
+            position: relative;
+            top: 5px;
+            transition: 0.3s;
+        }
+        .hide {
+            display: none;
+        }
+        main > div {
+            color: #000;
+            font-size: 14px;
+            padding: 0 30px;
+            text-align: center;
+        }
+        .error-message {
+            display: none;
+            color: palevioletred;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error-icon {
+            display: none;
+            position: absolute;
+            top: 50%;
+            right: 25px;
+            transform: translateY(-50%);
+            color: palevioletred;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .error {
+            display: block;
+        }
+        @media (max-height: 600px) {
+            .logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="logo" src="/static/images/mymelody_logo.png" alt="서비스 로고">
+    <main>
+        <form id="registerForm" onsubmit="return validateForm()">
+            <label for="name">이름</label>
+            <fieldset>
+                <input type="text" id="name" name="name" placeholder="사용자 이름">
+            </fieldset>
+
+            <label for="emailPrefix">이메일</label>
+            <fieldset style="display: flex; align-items: center;">
+                <input type="text" id="emailPrefix" name="emailPrefix" placeholder="이메일 아이디" maxlength="64" style="flex: 1;">
+                <span style="margin: 0 5px;">@</span>
+                <select id="emailDomain" name="emailDomain" style="flex-shrink: 0;">
+                    <option value="">도메인 선택</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="daum.net">daum.net</option>
+                    <option value="kakao.com">kakao.com</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="outlook.com">outlook.com</option>
+                    <option value="yiu.ac.kr">yiu.ac.kr</option>
+                </select>
+            </fieldset>
+
+            <label for="password">비밀번호</label>
+            <fieldset>
+                <input type="password" id="password" name="password" placeholder="비밀번호 (8자 이상)">
+            </fieldset>
+
+            <label for="confirmPassword">비밀번호 확인</label>
+            <fieldset>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인">
+                <span class="error-icon" id="passwordErrorIcon">!</span>
+            </fieldset>
+
+            <label for="birthdate">생년월일</label>
+            <fieldset>
+                <select id="birthYear" name="birthYear"></select>
+                <select id="birthMonth" name="birthMonth"></select>
+                <select id="birthDay" name="birthDay"></select>
+            </fieldset>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <button type="submit">다음</button>
+        </form>
+    </main>
+
+    <script>
+        // 생년월일 옵션 동적 생성 (1900년부터 현재 연도까지)
+        const selectYear = document.getElementById('birthYear');
+        const selectMonth = document.getElementById('birthMonth');
+        const selectDay = document.getElementById('birthDay');
+
+        const currentYear = new Date().getFullYear();
+        const startYear = 1900;
+
+        for (let year = currentYear; year >= startYear; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            selectYear.appendChild(option);
+        }
+
+        for (let month = 1; month <= 12; month++) {
+            const option = document.createElement('option');
+            option.value = month;
+            option.textContent = month + '월';
+            selectMonth.appendChild(option);
+        }
+
+        selectYear.addEventListener('change', updateDays);
+        selectMonth.addEventListener('change', updateDays);
+
+        function updateDays() {
+            const year = selectYear.value;
+            const month = selectMonth.value;
+            const daysInMonth = new Date(year, month, 0).getDate();
+
+            // Clear previous options
+            selectDay.innerHTML = '';
+
+            // Populate days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const option = document.createElement('option');
+                option.value = day;
+                option.textContent = day + '일';
+                selectDay.appendChild(option);
+            }
+        }
+
+        // 비밀번호 확인란 입력값 검사
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordErrorIcon = document.getElementById('passwordErrorIcon');
+
+            if (password !== confirmPassword) {
+                passwordErrorIcon.classList.add('error');
+            } else {
+                passwordErrorIcon.classList.remove('error');
+            }
+        });
+
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const emailPrefix = document.getElementById('emailPrefix').value;
+            const emailDomain = document.getElementById('emailDomain').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const birthYear = document.getElementById('birthYear').value;
+            const birthMonth = document.getElementById('birthMonth').value;
+            const birthDay = document.getElementById('birthDay').value;
+
+            // errorMessage 초기화
+            const errorMessageElement = document.getElementById('errorMessage');
+            errorMessageElement.style.display = 'none';
+            errorMessageElement.textContent = '';
+
+            if (name.trim() === '' || emailPrefix.trim() === '' || emailDomain === '' || password.trim() === '' || confirmPassword.trim() === '' || birthYear === '' || birthMonth === '' || birthDay === '') {
+                errorMessageElement.textContent = '모든 정보를 입력하세요.';
+                errorMessageElement.style.display = 'block';
+                return false;
+            }
+            if (password.length < 8) {
+                errorMessageElement.textContent = '비밀번호는 8자 이상이어야 합니다.';
+                errorMessageElement.style.display = 'block';
+                return false;
+            }
+            if (password !== confirmPassword) {
+                errorMessageElement.textContent = '비밀번호가 일치하지 않습니다.';
+                errorMessageElement.style.display = 'block';
+                return false;
+            }
+
+            const email = `${emailPrefix}@${emailDomain}`;
+            const birthdate = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
+
+            // 세션 스토리지에 데이터 저장
+            sessionStorage.setItem('nickname', name);
+
+            // 서버에 데이터 전송
+            fetch('/user-register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    nickname: name,
+                    birthdate: birthdate
+                })
+            })
+            // 서버 응답 처리
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // alert(data.message);
+                    window.location.href = data.redirect_url;
+                } else if (data.message) {
+                    // 실패 시 메시지 출력
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('오류 발생: ', error); // 오류 발생 시 console에 출력
+                alert('문제가 발생했습니다. 관리자에게 문의 바랍니다.');
+            });
+
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보 설정 - 마이멜로디</title>
+    <link rel="icon" href="/static/images/mymelody_favicon.png">
+    <link rel="stylesheet" href="/static/sidebar-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* 모든 요소에 box-sizing을 border-box로 설정 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff4f6;
+            font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+        }
+        .main-container {
+            width: 85%;
+            padding: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px;
+            margin-top: 10px;
+        }
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        /* Button styles */
+        .btn-custom {
+            width: 70%;
+            background-color: #ffcccc;
+            color: #ff7070;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #ffd6d6;
+        }
+        /* Modal styles */
+        .avatar-modal {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            outline: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .avatar-modal .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        .avatar-modal .modal-content img {
+            width: 90px;
+            height: 100px;
+            margin: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .profile-options-modal {
+            display: none;
+            position: fixed;
+            z-index: 1060;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            outline: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .profile-options-modal .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .profile-options-modal .modal-content button {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .hidden-input {
+            display: none;
+        }
+
+        .progress, .calendar {
+            background-color: #fff4f6;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 0px;
+            text-align: center;
+        }
+        .progress-bar {
+            background-color: #ffcccc;
+            width: 100%;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background-color: #ff7f7f;
+            width: {{ achievement_rate }}%;
+            height: 100%;
+            border-radius: 15px;
+        }
+        .progress .position-absolute {
+            font-size: 13px;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 1);
+        }
+        .calendar {
+            background-color: #fff4f6;
+            padding: 20px;
+            border-radius: 0px;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            table-layout: fixed;
+        }
+        .calendar input {
+            width: 100%;
+            border: none;
+            background-color: transparent;
+            text-align: center;
+            position: fixed;
+        }
+        .calendar input:focus {
+            outline: none;
+            position: fixed;
+        }
+        #current-month {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px;
+            text-align: center;
+        }
+        .calendar-box {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto; /* 달력을 가운데 정렬 */
+        }
+        .calendar-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .calendar-box th, .calendar-box td {
+            width: 14.28%; /* 열 너비를 동일하게 설정 (100% ÷ 7일) */
+            height: 55px;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        #today {
+            background-color: #ffcccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="/main" class="logo-link">
+            <img src="/static/images/mymelody_logo.png" alt="마이멜로디 로고">
+        </a>
+        <a href="/quest" class="button-link" data-text="퀘스트">🗝️</a>
+        <a href="/voice" class="button-link" data-text="AI 목소리">🎙️</a>
+        <a href="/wordle-index" class="button-link" data-text="영단어 게임">🎮</a>
+
+        <div class="sidebar-bottom">
+            <a href="/mypage"> <i class="fas fa-cog"></i> <!-- 설정 아이콘 --> </a>
+            <i class="fas fa-sign-out-alt" id="logoutIcon"></i> <!-- 로그아웃 아이콘 -->
+        </div>
+    </div>
+
+    <!-- 로그아웃 확인 모달 -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <p>로그아웃 하시겠습니까?</p>
+            <button id="confirmLogout" class="btn-confirm">예</button>
+            <button id="cancelLogout" class="btn-cancel">아니요</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="header">내 정보</div>
+        <div class="row justify-content-center">
+            <div class="col-xxl-3 col-xl-4 col-lg-6 profile-container">
+                <div class="center">
+                    <img id="profilePic" src="/static/images/profile/{{ profile_img }}" alt="프로필 사진" class="profile-pic mb-3">
+                    <input type="file" id="fileInput" class="hidden-input" accept="image/*">
+                </div>
+                <div class="center mb-3">
+                    <div class="flex">
+                        <span id="userName" class="user-name">{{ nickname }}</span>
+                        <input id="userNameInput" type="text" class="form-control d-none" value="사용자 이름">
+                        <a href="#" id="editNameBtn" class="text-muted ml-2"><i class="fas fa-edit"></i></a>
+                    </div>
+                </div>
+                <div class="center mb-3">
+                    <span id="userEmail" class="text-muted">{{ email }}</span>
+                </div>
+                <div class="progress mb-3 position-relative">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="position-absolute start-50 translate-middle" style="top: 50%;">목표 달성률 {{ achievement_rate }}%</div>
+                </div>
+                <button class="btn-custom" onclick="window.location.href='mypage-reset-password'">비밀번호 변경</button>
+                <button class="btn-custom" onclick="window.location.href='unregist'">회원 탈퇴</button>
+            </div>
+            <div class="col-xl-4 col-lg-6">
+                <div class="row">
+                    <div class="col">
+                        <h4>출석 달력</h4>
+                    </div>
+                    <!-- 상단에 월과 연도 표시 -->
+                    <div class="calendar-box">
+                        <div id="current-month"></div>
+                        <!-- 달력이 표시될 영역 -->
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-options-modal" id="profileOptionsModal">
+        <div class="modal-content">
+            <h5><strong>프로필 사진 설정</strong></h5>
+            <button class="btn btn-outline-primary" id="chooseFromFile">내 파일에서 선택</button>
+            <button class="btn btn-outline-secondary" id="chooseDefault">기본 이미지 선택</button>
+        </div>
+    </div>
+    <div class="avatar-modal" id="avatarModal">
+        <div class="modal-content">
+            <h5><strong>아바타 선택</strong></h5>
+            <div>
+                <img src="/static/images/profile/profile_img1.jpg" alt="아바타1" onclick="selectAvatar('/static/images/profile/profile_img1.jpg')">
+                <img src="/static/images/profile/profile_img2.jpg" alt="아바타2" onclick="selectAvatar('/static/images/profile/profile_img2.jpg')">
+                <img src="/static/images/profile/profile_img3.jpg" alt="아바타3" onclick="selectAvatar('/static/images/profile/profile_img3.jpg')">
+                <img src="/static/images/profile/profile_img4.jpg" alt="아바타4" onclick="selectAvatar('/static/images/profile/profile_img4.jpg')">
+                <img src="/static/images/profile/profile_img5.jpg" alt="아바타5" onclick="selectAvatar('/static/images/profile/profile_img5.jpg')">
+                <img src="/static/images/profile/profile_img6.jpg" alt="아바타6" onclick="selectAvatar('/static/images/profile/profile_img6.jpg')">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 이름 수정 모드 전환
+        function toggleEditMode() {
+            const userName = document.getElementById('userName');
+            const userNameInput = document.getElementById('userNameInput');
+            const editNameBtn = document.getElementById('editNameBtn');
+            const isEditMode = userName.classList.contains('d-none');
+
+            if (isEditMode) {
+                userName.textContent = userNameInput.value;
+                userName.classList.remove('d-none');
+                userNameInput.classList.add('d-none');
+                editNameBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            } else {
+                userNameInput.value = userName.textContent;
+                userName.classList.add('d-none');
+                userNameInput.classList.remove('d-none');
+                editNameBtn.innerHTML = '<i class="fas fa-check"></i>';
+            }
+        }
+
+        // 이름 수정 확인
+        function confirmNameChange() {
+            const userName = document.getElementById('userName');
+            const userNameInput = document.getElementById('userNameInput');
+            const newName = userNameInput.value;
+
+            if (confirm(`${newName}(으)로 이름을 변경하시겠습니까?`)) {
+                fetch('/user-update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nickname: newName
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        userName.textContent = newName;
+                    } else if (data.message) {
+                        // 실패 시 메시지 출력
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('오류 발생: ', error);
+                    alert('문제가 발생했습니다. 관리자에게 문의 바랍니다.');
+                });
+                toggleEditMode();
+            }
+        }
+
+        document.getElementById('editNameBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            const userName = document.getElementById('userName');
+            const isEditMode = userName.classList.contains('d-none');
+
+            if (isEditMode) {
+                confirmNameChange();
+            } else {
+                toggleEditMode();
+            }
+        });
+
+        document.getElementById('userNameInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                confirmNameChange();
+            }
+        });
+
+        document.getElementById('profilePic').addEventListener('click', function () {
+            document.getElementById('profileOptionsModal').style.display = 'block';
+        });
+
+        document.getElementById('chooseFromFile').addEventListener('click', function () {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.click();
+
+            fileInput.onchange = function (event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    const allowedExtensions = ['image/jpg', 'image/jpeg', 'image/png'];
+                    if (!allowedExtensions.includes(file.type)) {
+                        alert('사진 파일은 .jpg/jpeg, .png 확장자만 업로드 가능합니다.');
+                        return;
+                    }
+                    if (confirm('프로필 사진을 변경하시겠습니까?')) {
+                        const reader = new FileReader();
+                        const formData = new FormData();
+
+                        reader.onload = (event) => {
+                            const dataUrl = event.target.result;
+                            document.getElementById('profilePic').src = dataUrl;
+                        };
+                        reader.readAsDataURL(file);
+
+                        formData.append('profileImage', fileInput.files[0]);
+                        // 서버에 데이터 전송
+                        fetch('/user-update', {
+                            method: 'PUT',
+                            body: formData  // multipart/form-data 형식으로 전송
+                        })
+                        // 서버 응답 처리
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // alert(data.message);
+                            } else if (data.message) {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('오류 발생: ', error); // 오류 발생 시 console에 출력
+                            alert('문제가 발생했습니다. 관리자에게 문의 바랍니다.');
+                        });
+                    }
+                }
+                document.getElementById('profileOptionsModal').style.display = 'none';
+            };
+        });
+
+        document.getElementById('chooseDefault').addEventListener('click', function () {
+            document.getElementById('profileOptionsModal').style.display = 'none';
+            document.getElementById('avatarModal').style.display = 'block';
+        });
+
+        function selectAvatar(avatarSrc) {
+            if (confirm('프로필 사진을 변경하시겠습니까?')) {
+                const formData = new FormData();
+                
+                const selectedImageUrl = avatarSrc;
+                const fileName = selectedImageUrl.substring(selectedImageUrl.lastIndexOf('/') + 1);  // 파일명만 추출
+                formData.append('profileImage', fileName);
+                // 서버에 데이터 전송
+                fetch('/user-update', {
+                    method: 'PUT',
+                    body: formData  // multipart/form-data 형식으로 전송
+                })
+                // 서버 응답 처리
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('profilePic').src = avatarSrc;
+                    } else if (data.message) {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('오류 발생: ', error); // 오류 발생 시 console에 출력
+                    alert('문제가 발생했습니다. 관리자에게 문의 바랍니다.');
+                });
+                document.getElementById('avatarModal').style.display = 'none';
+            }
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('avatarModal') || event.target == document.getElementById('profileOptionsModal')) {
+                document.getElementById('avatarModal').style.display = 'none';
+                document.getElementById('profileOptionsModal').style.display = 'none';
+            }
+        };
+
+        function displayCurrentMonth() {
+            var currentDate = new Date(); // 현재 날짜 객체 생성
+            var monthNames = [
+                "1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월"
+            ];
+            var currentMonth = currentDate.getMonth(); // 현재 월 가져오기 (0부터 시작)
+
+            document.getElementById("current-month").innerHTML = monthNames[currentMonth];
+        }
+
+        // 달력을 그리는 함수
+        function printCalendar(y, m) {
+            var calendar_box = document.getElementById("calendar");
+
+            // 현재 날짜와 현재 달에 1일의 날짜 객체 생성
+            var date = new Date();
+            var nowY = date.getFullYear(); // 현재 연도
+            var nowM = date.getMonth(); // 현재 월
+            var nowD = date.getDate(); // 현재 일
+
+            // 연도, 월을 입력받지 않은 경우 현재 날짜의 연도, 월 정보를 사용함
+            y = (y != undefined) ? y : nowY;
+            m = (m != undefined) ? m - 1 : nowM;
+
+            // 현재 월의 1일 정보
+            var theDate = new Date(y, m, 1);
+            var theDay = theDate.getDay(); // 해당 월의 첫 번째 날의 요일
+
+            // 1월부터 12월까지 마지막 일을 배열로 저장
+            var last = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+            // 윤년 계산
+            if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) last[1] = 29;
+
+            // 현재 월의 마지막 일 정보
+            var lastDate = last[m];
+
+            // 현재 월의 달력에 필요한 행의 개수
+            var row = Math.ceil((theDay + lastDate) / 7);
+
+            // 요일 행 생성
+            var calendar = "<table>";
+            calendar += "<tr>";
+            calendar += "<th>SUN</th>";
+            calendar += "<th>MON</th>";
+            calendar += "<th>TUE</th>";
+            calendar += "<th>WED</th>";
+            calendar += "<th>THU</th>";
+            calendar += "<th>FRI</th>";
+            calendar += "<th>SAT</th>";
+            calendar += "</tr>";
+
+            // 1일부터 기록
+            var dNum = 1;
+
+            // 이중 for문을 이용해 달력 테이블 생성
+            for (var i = 1; i <= row; i++) {
+                calendar += "<tr>"; // 행 생성
+                for (var k = 0; k < 7; k++) { // 열 생성
+                    // 빈 날짜는 빈칸으로 표기
+                    if (i === 1 && k < theDay || dNum > lastDate) {
+                        calendar += "<td> &nbsp; </td>";
+                    } else {
+                        // 오늘 날짜
+                        if (dNum === nowD && y === nowY && m === nowM) {
+                            calendar += "<td id='today'>" + dNum + "</td>";
+                        } else {
+                            // 오늘이 아닌 날짜
+                            calendar += "<td>" + dNum + "</td>";
+                        }
+                        dNum++;
+                    }
+                }
+                calendar += "</tr>";
+            }
+
+            // innerHTML 값을 달력 테이블로 변경
+            calendar += "</table>";
+            calendar_box.innerHTML = calendar;
+        }
+
+        // 현재 월과 연도로 달력 출력
+        displayCurrentMonth(); // 상단에 월 표시
+        printCalendar(); // 달력 표시
+        
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutModal = document.getElementById('logoutModal');
+
+            // 로그아웃 아이콘 클릭 시 모달
+            document.getElementById('logoutIcon').addEventListener('click', function() {
+                logoutModal.style.display = 'flex';
+                logoutModal.style.opacity = 1;
+            });
+            document.getElementById('confirmLogout').addEventListener('click', function() {
+                window.location.href = 'user-logout';
+            });
+            document.getElementById('cancelLogout').addEventListener('click', function() {
+                logoutModal.style.opacity = 0;
+                setTimeout(() => {
+                    logoutModal.style.display = 'none';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
